@@ -1,11 +1,14 @@
-import "../css/Favorites.css"
-function Favorites() {
-  return (
-    <div className="favorites-empty">
-      <h2>No Favorite Movies Yet</h2>
-      <p>Start adding movies to your favorites and they will appear here</p>
-    </div>
-  );
-}
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter} from 'react-router-dom'
+import "./css/index.css"
+import App from './App.jsx'
 
-export default Favorites;
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <BrowserRouter>
+      <App /> 
+    </BrowserRouter>
+    
+  </StrictMode>
+)
