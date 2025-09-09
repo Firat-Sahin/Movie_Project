@@ -1,14 +1,29 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter} from 'react-router-dom'
-import "./css/index.css"
-import App from './App.jsx'
+import "../css/Favorites.css";
+import { useMovieContext } from "../context/MovieContext";
+import MovieCard from "../components/MovieCard";
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App /> 
-    </BrowserRouter>
-    
-  </StrictMode>
-)
+function Favorites() {
+  const { favorites } = useMovieContext();
+
+  if (favorites) {
+    return (
+      <div className="favorites">
+        <h2>Your Favorites</h2>
+        <div className="movies-grid">
+          {favorites.map((movie) => (
+            <MovieCard movie={movie} key={movie.id} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="favorites-empty">
+      <h2>No Favorite Movies Yet</h2>
+      <p>Start adding movies to your favorites and they will appear here!</p>
+    </div>
+  );
+}
+
+export default Favorites;
