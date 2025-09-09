@@ -12,24 +12,35 @@ function Home() {
 
     useEffect(() => {
         const loadPopularMovies = async () => {
-            try{
+            try {
                 const popularMovies = await getPopularMovies()
                 setMovies(popularMovies)
-            } catch (err){
+            } catch (err) {
                 console.log(err)
                 setError("Failed to load movies...")
-            }
-            finally{
+            } finally {
                 setLoading(false)
             }
-     }
+        }
         loadPopularMovies();
-    },[])
+    }, [])
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
-        alert(searchQuery);
-        setSearchQuery("");    
+        if (!searchQuery) return; 
+
+        try {
+            setLoading(true);
+            const results = await searchMovies(searchQuery); 
+            setMovies(results);
+        } catch (err) {
+            console.error(err);
+            setError("Failed to search movies...");
+        } finally {
+            setLoading(false);
+        }
+
+        setSearchQuery(""); 
     }
 
     return (
@@ -45,12 +56,13 @@ function Home() {
                 <button type="submit" className="search-button">Search</button>
             </form>
 
+            {loading ? <p>Loading...</p> : null}
+            {error ? <p>{error}</p> : null}
+
             <div className="movies-grid">
-                {movies.map((movie) => 
-                    (
-                        <MovieCard movie={movie} key={movie.id} />
-                    )
-                )}
+                {movies.map((movie) => (
+                    <MovieCard movie={movie} key={movie.id} />
+                ))}
             </div>
         </div>
     );
